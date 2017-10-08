@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Sections ({ categories }) {
+export default function SectionList ({ categories }) {
   if (!categories){return <div><h2>No Categories</h2></div>} else {    //returning soemthing triggers re render? And if state changes, rerender.
     return (
       <div className=''>
@@ -19,10 +19,10 @@ export default function Sections ({ categories }) {
     )
   }
   }
-//onClick=hideSections component, show posts component.
+//onClick=hideSectionList component, show posts component.
 /*
-showSections
-hideSections
+showSectionList
+hideSectionList
 showPosts
 hidePosts
 expandComments
@@ -36,4 +36,7 @@ addComment
 RemoveComment
 addSection
 removeSection
+
+Reducers will take the action and return the new state to the store.
+The functions within components or app props will update state of each component.
 */

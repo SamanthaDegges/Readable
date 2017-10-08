@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import '../App.css';
 import getCategories from '../utils/api';
-import Sections from './Sections';
+import SectionList from './SectionList';
 
 class App extends Component {
 
 state = {
   categories: [],
-  loadingCategories: false
+  loadingCategories: false,
 }
 /*  searchFood = (e) => {
     if (!this.input.value) {
@@ -60,7 +60,7 @@ generateCategoryList = () => {
             onClick={this.generateCategoryList}>
           </button>
             {categories !== null && (
-            <Sections
+            <SectionList
               categories={categories}
               // onSelect={(recipe) => {
               //   selectRecipe({ recipe, day: this.state.day, meal: this.state.meal })
@@ -76,3 +76,11 @@ generateCategoryList = () => {
 }
 
 export default App;
+
+/*
+
+Default (Root)
+should list all available categories, which should link to a category view for that category
+should list all of the posts ordered by voteScore (highest score first)
+should have a control for changing the sort method for the list, including at minimum, order by voteScore and order by timestamp
+should have a control for adding a new post*/
