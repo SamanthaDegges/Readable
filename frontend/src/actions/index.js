@@ -3,7 +3,8 @@ export const ADD_COMMENT = 'ADD_COMMENT' //if id exists and is found to exist in
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 export const ADD_POST = 'ADD_POST' //will be used as edit alternatively
 export const REMOVE_POST = 'REMOVE_POST'
-export const VOTE = 'VOTE'
+export const UP_VOTE = 'UP_VOTE'
+export const DOWN_VOTE = 'DOWN_VOTE'
 
 
 export function addComment ({ title, timestamp, voteScore, body, author }) {
@@ -29,7 +30,7 @@ id: '894tuq4ut84ut8v4t8wun89g',
 
 export function removeComment ({ id, deleted }) {
   return {
-    type: REMOVE_FROM_CALENDAR,
+    type: REMOVE_COMMENT,
     deleted: true
   }
 }
@@ -70,10 +71,20 @@ export function removePost ({ name }) {
     name
   }
 }
-export function vote ({ arrow }) { //up or down arrow, increment # or default to 1, on post or comment, id.
+
+//Could this be one action called VOTE, where the up or down arrow is passed in to then determine whether to increment voteScore by +-1, on a post or comment..
+export function upVote ({ id, voteScore }) {
   return {
-    type: VOTE,
-    arrow,
-    increment
+    type: UP_VOTE,
+    voteScore,//comment or post?
+    id
+  }
+}
+
+export function downVote ({ id, voteScore }) {
+  return {
+    type: DOWN_VOTE,
+    voteScore,
+    id
   }
 }
