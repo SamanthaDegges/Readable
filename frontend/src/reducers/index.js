@@ -1,17 +1,40 @@
 import { combineReducers } from 'redux'
 
-import { //actions
+import {
   ADD_COMMENT,
   REMOVE_COMMENT,
+  ADD_POST,
+  REMOVE_POST,
+  UP_VOTE,
+  DOWN_VOTE
 } from '../actions'
 
-function commentReducer (state = {}, action) {
+const initialCommentState = {
+  parentId: "",
+  timestamp: Date.now(),
+  body: '',
+  author: '',
+  voteScore: 0,
+  deleted: false,
+  parentDeleted: false
+}
+
+function commentReducer (state = initialCommentState, action) {
+  const { parentId, timestamp, body, author, voteScore, deleted, parentDeleted } = action
+
   switch (action.type) {
     case ADD_COMMENT:
-      const {comment} = action
       return {
         ...state,
-      comment  : comment
+        [parentId]: parentId,
+        [body]: body,
+        [author]: ''
+      }
+    case REMOVE_COMMENT:
+      return  {
+        ...state,
+        [deleted]: true,
+        [parentDeleted]: parentDeleted
       }
     default:
     return state
@@ -33,45 +56,42 @@ function food (state = {}, action) {
       return state
   }
 }
-//store or initial state?
-const initialCalendarState = {
-  sunday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  monday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  tuesday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  wednesday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  thursday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  friday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
-  saturday: {
-    breakfast: null,
-    lunch: null,
-    dinner: null,
-  },
+*/
+const initialPostState = {
+  "id": "",
+  "timestamp": Date.now(),
+  "title": "",
+  "body": "",
+  "author": "",
+  "category": "",
+  "voteScore": 0,
+  "deleted": false
 }
 
+function postReducer (state = initialPostState, action) {
+  const { id, title, body, author, category, deleted } = action
+
+  switch (action.type) {
+    case ADD_POST:
+      return {
+        ...state,
+        [id]: id,
+        [title]: title,
+        [body]: body,
+        [author]: author,
+        [category]: category
+      }
+    case REMOVE_POST:
+      return {
+        ...state,
+        deleted: true
+      }
+    default:
+    return state
+  }
+}
+
+/*
 function calendar (state = initialCalendarState, action) {
   const { day, recipe, meal } = action
 
@@ -96,9 +116,29 @@ function calendar (state = initialCalendarState, action) {
       return state
   }
 }
+*/
+
+function voteReducer (state = {}, action) {
+  const { voteScore } = action
+
+  switch (action.type) {
+    case DOWN_VOTE:
+      return {
+        ...state,
+        [voteScore]: voteScore + 1
+      }
+    case UP_VOTE:
+      return {
+        ...state,
+        [voteScore]: voteScore - 1
+      }
+    default:
+    return state
+  }
+}
 
 export default combineReducers({
-  food,
-  calendar,
+  commentReducer,
+  postReducer,
+  voteReducer
 })
-*/
