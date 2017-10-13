@@ -9,10 +9,10 @@ export default function SectionList ({ categories }) {
         </h3>
         <ul>
         {console.log(categories)}
-          {categories.map((each) => (
-            <a href={`http://localhost:3001/:${each.path}/posts`}><li key={each}>
+          {categories.map((each) => ( //onclick, each category can then call a function to populate posts(of that cateogry and then display them)
+            <li key={each.id}> {/*onClick={filterPostsByCat(each.name)} */}
               {each.name}
-            </li></a>
+            </li>
           ))}
         </ul>
       </div>

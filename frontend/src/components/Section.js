@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function Section ({ category }) {
   // getCategoryposts and map them
+  return null
 }
 
 // Category View

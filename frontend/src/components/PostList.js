@@ -14,7 +14,7 @@ export default function PostList ({ category, posts }) {
       <h3>{category}</h3>
       {posts && posts.map((post)=>(
         <div>
-          <p>{post.title}</p>
+          <p>{post.title}</p><p>{post.id}</p>
           <p>{post.title} by {post.author} on {post.timestamp}</p>
         </div>
       ))}
