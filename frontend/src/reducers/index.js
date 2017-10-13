@@ -14,7 +14,7 @@ const initialCommentState = {
   timestamp: Date.now(),
   body: '',
   author: '',
-  voteScore: 0,
+  voteScore: 1,
   deleted: false,
   parentDeleted: false
 }
@@ -41,22 +41,6 @@ function commentReducer (state = initialCommentState, action) {
   }
 }
 
-/*
-//reducer
-function food (state = {}, action) {
-  switch (action.type) {
-    case ADD_RECIPE :
-      const { recipe } = action
-
-      return {
-        ...state,
-        [recipe.label]: recipe,
-      }
-    default :
-      return state
-  }
-}
-*/
 const initialPostState = {
   "id": "",
   "timestamp": Date.now(),
@@ -64,7 +48,7 @@ const initialPostState = {
   "body": "",
   "author": "",
   "category": "",
-  "voteScore": 0,
+  "voteScore": 1,
   "deleted": false
 }
 
@@ -91,34 +75,7 @@ function postReducer (state = initialPostState, action) {
   }
 }
 
-/*
-function calendar (state = initialCalendarState, action) {
-  const { day, recipe, meal } = action
-
-  switch (action.type) {
-    case ADD_RECIPE :
-      return {
-        ...state,
-        [day]: {
-          ...state[day],
-          [meal]: recipe.label,
-        }
-      }
-    case REMOVE_FROM_CALENDAR :
-      return {
-        ...state,
-        [day]: {
-          ...state[day],
-          [meal]: null,
-        }
-      }
-    default :
-      return state
-  }
-}
-*/
-
-function voteReducer (state = {}, action) {
+function voteReducer (state = {}, action) { //for comments and posts?
   const { voteScore } = action
 
   switch (action.type) {
