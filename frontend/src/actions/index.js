@@ -1,7 +1,6 @@
-export const ADD_COMMENT = 'ADD_COMMENT' //if id exists and is found to exist in DB, then all 'addcomments' will be considered a edit of an existing comment. Their data can be updated with put request.
-//Otherwise, if id is not found in DB, then comment will be new and all data will be passed in a POST req.
+export const ADD_COMMENT = 'ADD_COMMENT'
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
-export const ADD_POST = 'ADD_POST' //will be used as edit alternatively
+export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const UP_VOTE = 'UP_VOTE'
 export const DOWN_VOTE = 'DOWN_VOTE'
@@ -58,25 +57,24 @@ export function removeComment ({ id, deleted }) {
     }
 ]
 */
-export function addPost ({ name }) {
+export function addPost ({ post }) {
   return {
     type: ADD_POST,
-    name
+    post
   }
 }
 
-export function removePost ({ name }) {
+export function removePost ({ post }) {
   return {
     type: REMOVE_POST,
-    name
+    post
   }
 }
 
-//Could this be one action called VOTE, where the up or down arrow is passed in to then determine whether to increment voteScore by +-1, on a post or comment..
 export function upVote ({ id, voteScore }) {
   return {
     type: UP_VOTE,
-    voteScore,//comment or post?
+    voteScore,
     id
   }
 }
