@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../App.css';
-import { getCategories, votePost, voteComment, getPosts } from '../utils/api'; //USE THESE FUNCTIONS TO UPDATE DB ONLY
+import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api'; //USE THESE FUNCTIONS TO UPDATE DB ONLY
 import SectionList from './SectionList';
 import PostList from './PostList';
-import { addPost, upVote, downVote, removePost, addComment, removeComment } from '../actions';
+import { addPost, upVote, downVote, removePost, addComment, removeComment,  } from '../actions';
 
 class App extends Component {
 
