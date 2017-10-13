@@ -2,76 +2,119 @@ const token = "whatever"
 const api = "http://localhost:3001"
 const headers = {
   'Accept': 'application/json',
+  'Content-Type' :'application/json',
   'Authorization': token
 }
 
-
-// export function fetchRecipes (food = '') {
-//   food = food.trim()
-//
-//   return fetch(`https://api.edamam.com/search?q=${food}&app_id=${API_ID}&app_key=${APP_KEY}`)
-//     .then((res) => res.json())
-//     .then(({ hits }) => hits.map(({ recipe }) => recipe))
-// }
-
-export default function getCategories () {
+export function getCategories () {
   return fetch(`${ api }/categories`, { headers })
-  .then((categoriesResponse) => categoriesResponse.json())
-  .then((res) => res.categories) //
+  .then((apiResponse) => apiResponse.json())
+  .then((resolved) => resolved.categories) //
 }
 
-
-//
-// fetch(url, { headers: { 'Authorization': 'whatever-you-want' }})
-//
-//     The following endpoints are available:
-//
-//     GET /categories
-//       USAGE:
-//         Get all of the categories available for the app. List is found in categories.js.
-//         Feel free to extend this list as you desire.
- /* FROM MYREADS BOOKSAPI file
-const api = "https://reactnd-books-api.udacity.com"
-
-
-// Generate a unique token for storing your bookshelf data on the backend server.
-let token = localStorage.token
-if (!token)
-  token = localStorage.token = Math.random().toString(36).substr(-8)
-
-const headers = {
-  'Accept': 'application/json',
-  'Authorization': token
+//Use to get any posts and then filter response accordingly
+export function getPosts () {
+  return fetch(`${ api }/posts`, { headers })
+  .then(function(response) {
+    // console.log('test 1');
+    response = response.json()
+    // console.log('RESPONSE IS : ',response)
+    return response
+  }).then(function(resolved) {
+    // console.log('-------',resolved);
+    return resolved
+  })
 }
 
-export const get = (bookId) =>
-  fetch(`${api}/books/${bookId}`, { headers })
-    .then(res => res.json())
-    .then(data => data.book)
-
-export const getAll = () =>
-  fetch(`${api}/books`, { headers })
-    .then(res => res.json())
-    .then(data => data.books)
-
-export const update = (book, shelf) =>
-  fetch(`${api}/books/${book.id}`, {
-    method: 'PUT',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ shelf })
-  }).then(res => res.json())
-
-export const search = (query, maxResults) =>
-  fetch(`${api}/search`, {
+export const createPost = (newPost) =>
+  fetch(`${ api }/posts`, {
     method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query, maxResults })
-  }).then(res => res.json())
-    .then(data => data.books)
+    headers,
+    body: JSON.stringify({ newPost })
+  })
+  .then(apiResponse => apiResponse.json())
+
+export const votePost = (postId, upVote_downVote) =>
+  fetch(`${ api }/posts/${ postId }`, {
+    method: 'POST',
+    headers,
+    option: upVote_downVote
+  })
+  .then(apiResponse => apiResponse.json())
+
+export const deletePost = (postId) =>
+fetch(`${ api }/posts/${ postId }`, {
+  method: 'DELETE',
+  headers
+})
+.then(apiResponse => apiResponse.json())
+
+export const editPost = (postId, edit) =>
+fetch(`${ api }/posts/${ postId }`, {
+  method: 'PUT',
+  headers,
+  body: JSON.stringify({ edit }) //title, body, etc
+})
+.then(apiResponse => apiResponse.json())
+
+/*
+COMMENTS
+*/
+export const voteComment = (commentId, upVote_downVote) =>
+  fetch(`${ api }/comments${ commentId }`, {
+    headers,
+    method: 'POST',
+    option: upVote_downVote
+  })
+  .then(apiResponse => apiResponse.json())
+
+export const createComment = (newComment) =>
+  fetch(`${ api }/comments`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ newComment })
+  })
+  .then(apiResponse => apiResponse.json())
+
+export const editComment = (commentId, edit) =>
+  fetch(`${ api }/comments/${ commentId }`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ edit }) //title, body, etc
+  })
+  .then(apiResponse => apiResponse.json())
+
+export const getComments = (postId) =>
+  fetch(`${ api }/posts/${ postId }/comments`, { headers }) //get all comments for a particular post
+  .then(apiResponse => apiResponse.json())
+
+export const getComment = (commentId) =>
+  fetch(`${ api }/comments/${ commentId }`, { headers }) //get details of one comment
+  .then(apiResponse => apiResponse.json())
+
+export const deleteComment = (commentId) =>
+  fetch(`${ api }/comments/${ commentId }`, {
+    method: 'DELETE',
+    headers
+  })
+  .then(apiResponse => apiResponse.json())
+
+
+
+/*
+
+curl -X POST
+-H "Content-Type: application/json"
+-H "Authorization: whatever"
+--data '{"option": "upVote"}'
+http://localhost:3001/posts/8xf0y6ziyjabvozdd253nd
+
+DELETE /posts/:id
+  USAGE:
+    Sets the deleted flag for a post to 'true'.
+    Sets the parentDeleted flag for all child comments to 'true'.
+
+DELETE /comments/:id
+  USAGE:
+    Sets a comment's deleted flag to 'true'
 */
