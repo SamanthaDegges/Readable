@@ -10,9 +10,9 @@ import { Provider } from 'react-redux';
 //store returns a function that calls .next(action(){} and logs a bunch of crap before it actually dispatches the action.
 const logger = store => next => action => {
   console.group(action.type)
-  console.info('dispatching', action)
+  console.info('Dispatching', action)
   let result = next(action)
-  console.log('next state', store.getState())
+  console.log('..Next state', store.getState())
   console.groupEnd(action.type)
   return result
 }
