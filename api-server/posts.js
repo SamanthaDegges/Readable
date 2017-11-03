@@ -5,7 +5,7 @@ let db = {}
 const defaultData = {
   "8xf0y6ziyjabvozdd253nd": {
     id: '8xf0y6ziyjabvozdd253nd',
-    timestamp: 1467166872634,
+    timestamp: 1467166872,
     title: 'Ut Latin',
     body: 'Ut tempus sagittis nisl vel viverra. Vivamus rutrum, lacus at viverra dapibus, eros tortor ullamcorper quam, at aliquam nulla nisi sed lacus. Duis at ipsum a leo aliquet blandit. Duis accumsan, massa quis congue sagittis, metus sapien posuere diam, nec lobortis nisi tellus at augue. Sed hendrerit facilisis mauris sit amet suscipit. Fusce elementum volutpat mi ut fermentum. Vestibulum sit amet dapibus orci. Sed ut arcu lobortis, iaculis risus quis, viverra urna. Nam at fringilla massa.',
     author: 'MrMeowington90',
@@ -45,7 +45,7 @@ const defaultData = {
   },
   "9i91y5zyyunovozdd321lk": {
       id: '9i91y5zyyunovozdd321lk',
-      timestamp: 1467166872634,
+      timestamp: 1467166872,
       title: 'Udacity is the best place to learn React',
       body: 'Nam vel lacus libero. Nulla mollis consequat venenatis. Nunc elementum eget nunc id porttitor. Fusce molestie sapien nec turpis ultricies, nec dignissim sem pharetra. Ut tempus sagittis nisl vel viverra. Vivamus rutrum, lacus at viverra dapibus, eros tortor ullamcorper quam, at aliquam nulla nisi sed lacus. Duis at ipsum a leo aliquet blandit. Duis accumsan, massa quis congue sagittis, metus sapien posuere diam, nec lobortis nisi tellus at augue. Sed hendrerit facilisis mauris sit amet suscipit. Fusce elementum volutpat mi ut fermentum. Vestibulum sit amet dapibus orci. Sed ut arcu lobortis, iaculis risus quis, viverra urna. Nam at fringilla massa.',
       author: 'Clara',
