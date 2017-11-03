@@ -6,7 +6,8 @@ import {
   ADD_POST,
   REMOVE_POST,
   UP_VOTE,
-  DOWN_VOTE
+  DOWN_VOTE,
+  GET_POSTS,
 } from '../actions'
 
 const initialCommentState = {
@@ -41,6 +42,26 @@ function commentReducer (state = initialCommentState, action) {
   }
 }
 
+function postsReducer (state = [], action) {
+  const { posts } = action
+  switch (action.type) {
+    case GET_POSTS:
+    console.log('switch: ',posts, action.type);
+      return {
+        ...state,
+        [posts] : posts.map((post) => post)
+      }
+      // case ADD_POST:
+      // return [
+      //   ...state,
+      //   {
+      //     post: action.post
+      //   }
+      // ]
+      default:
+      return state
+  }
+}
 const initialPostState = {
   "id": "",
   "timestamp": Date.now(),
@@ -49,10 +70,12 @@ const initialPostState = {
   "author": "",
   "category": "",
   "voteScore": 1,
-  "deleted": false
+  "deleted": false,
+  "childComments": []
 }
 
 function postReducer (state = initialPostState, action) {
+  //for editing post content
   const { id, title, body, author, category, deleted } = action
 
   switch (action.type) {
@@ -76,26 +99,30 @@ function postReducer (state = initialPostState, action) {
 }
 
 function voteReducer (state = {}, action) { //for comments and posts?
-  const { voteScore } = action
+  const { voteScore, id } = action
 
   switch (action.type) {
     case DOWN_VOTE:
       return {
         ...state,
-        [voteScore]: voteScore + 1
+        id,
+        voteScore: voteScore - 1
       }
     case UP_VOTE:
       return {
         ...state,
-        [voteScore]: voteScore - 1
+        id,
+        voteScore: voteScore + 1
       }
     default:
     return state
   }
 }
 
+
 export default combineReducers({
   commentReducer,
   postReducer,
-  voteReducer
+  voteReducer,
+  postsReducer
 })
