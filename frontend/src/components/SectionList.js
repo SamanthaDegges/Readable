@@ -1,21 +1,26 @@
 import React from 'react'
 
 export default function SectionList ({ categories }) {
+  function willDoOnClick() {
+    return null
+  }
+
   if (!categories){return <div><h2>No Categories</h2></div>} else {    //returning soemthing triggers re render? And if state changes, rerender.
     return (
-      <div className=''>
-        <h3 className=''>
-          What Everyone Is Talking About
-        </h3>
-        <ul>
-        {console.log(categories)}
+      <div>
+        <h5 className=''>
+        What Everyone Is Talking About
+        </h5>
+        <div className="list-group">
+          {console.log(categories)}
           {categories.map((each) => ( //onclick, each category can then call a function to populate posts(of that cateogry and then display them)
-            <li key={each.id}> {/*onClick={filterPostsByCat(each.name)} */}
+              <a key={each.name} className = "list-group-item"> {/*onClick={show listed posts for that categry)} */}
               {each.name}
-            </li>
-          ))}
-        </ul>
+              </a>
+            ))}
+        </div>
       </div>
+
     )
   }
   }
