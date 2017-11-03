@@ -12,7 +12,6 @@ export default function SectionList ({ categories }) {
         What Everyone Is Talking About
         </h5>
         <div className="list-group">
-          {console.log(categories)}
           {categories.map((each) => ( //onclick, each category can then call a function to populate posts(of that cateogry and then display them)
               <a key={each.name} className = "list-group-item"> {/*onClick={show listed posts for that categry)} */}
               {each.name}
