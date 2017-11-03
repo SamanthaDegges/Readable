@@ -1,12 +1,29 @@
+import { getPosts } from '../utils/api'; //USE THESE FUNCTIONS TO UPDATE DB ONLY
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const UP_VOTE = 'UP_VOTE'
 export const DOWN_VOTE = 'DOWN_VOTE'
+export const GET_POSTS = 'GET_POSTS'
 
+
+// export const VOTE_COMMENT = 'VOTE_COMMENT'
+
+export function GetPosts (posts) {
+  console.log('GetPosts action fired. Passed in: ', posts);
+  // getPosts().then((posts) => {
+    // console.log(posts);
+    return {
+      type: GET_POSTS,
+      posts
+    }
+  // })
+}
 
 export function addComment ({ title, timestamp, voteScore, body, author }) {
+  //ajax call to api && return the response
+  //createComment(newComment)
   return {
     type: ADD_COMMENT,
     timestamp,
@@ -71,7 +88,8 @@ export function removePost ({ post }) {
   }
 }
 
-export function upVote ({ id, voteScore }) {
+export function upVote ({id, voteScore}) {
+  console.log('UPVOTE ACTION FIRED. PASSED in ', id, voteScore)
   return {
     type: UP_VOTE,
     voteScore,
