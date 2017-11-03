@@ -1,18 +1,21 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import '../App.css';
-import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api'; //USE THESE FUNCTIONS TO UPDATE DB ONLY
-import SectionList from './SectionList';
-import PostList from './PostList';
-import { addPost, upVote, downVote, removePost, addComment, removeComment,  } from '../actions';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import '../App.css'
+import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api' //USE THESE FUNCTIONS TO UPDATE DB ONLY
+import SectionList from './SectionList'
+import PostList from './PostList'
+import MainView from './MainView'
+import { addPost, upVote, downVote, removePost, addComment, removeComment, GetPosts  } from '../actions'
 
 class App extends Component {
 
   state = {
+    filter: "",
     categories: [],
-    loadingCategories: false,
-    posts: [],
-    comments: {}
+    comments: [],
+    showPostsByCategory: false,
+    showPostsByDate: false,
+    showPostsByVote: true
   }
 
   componentDidMount(){
@@ -23,15 +26,12 @@ class App extends Component {
     })
 
     getPosts().then((posts) => {
-      this.setState(state => ({
-        posts: posts
-      }))
+      this.props.onGetPosts(posts)
     })
-
   }
 
-  categorizePosts = (category) => {
-    this.posts.filter((each) => each.category === category)
+  categorizePosts = (category, posts ) => {
+    posts.filter((each) => each.category === category)
   }
 
   rankPosts = () => {
@@ -42,37 +42,61 @@ class App extends Component {
     this.posts.sort((a,b) => a.timestamp - b.timestamp)
   }
 
-  onUpVoteComment = (id, option) => {
-      //call api and then dispatch action.
-      votePost(id, option)
-      .then((newVoteScore) => {
-        this.setState(() => ({
-          voteScore: newVoteScore
-        }))
-      })
-    }
-
   render() {
-    const { categories, posts } = this.state
-    const { onUpVote, onDownVote, onRemovePost, onAddPost } = this.props
-
+    const { showPostsByCategory, showPostsByVote, showPostsByDate, categories, filter } = this.state
+    const { posts, allComments, onUpVotePost, onDownVotePost, onRemovePost, onAddPost, onGetPosts } = this.props
     return (
       <div className="App">
-        <div>
-          <div>
-            {categories.map((each)=>
-              <PostList
-              category = {each.name}
-              posts = {posts}
-              />
-            )}
-
+          <div className="row">
+            <div id="sideBar" className = "sidebar-offcanvas col-xs-6 col-md-2">
             {categories !== null && (
-            <SectionList
+              <SectionList
               categories={categories}
-            />)}
+              />)}
+              </div>
+              <div id="mainColumn" className = "col-xs-12 col-md-8 offset-md-1">
+                  <MainView
+                    filter = {filter}
+                    categories = {categories}
+                    byCategory = {showPostsByCategory}
+                    byDate = {showPostsByDate}
+                    byVote = {showPostsByVote}
+                    posts = {posts}
+                    onClickUp = {(post) => { onUpVotePost({id: post.id, voteScore: post.voteScore}) }}
+                    onClickDown = {(post) => { onDownVotePost({id: post.id, voteScore:post.voteScore}) }}
+                    onSort = {(posts, selectedFilter) => {
+                      console.log(selectedFilter, posts)
+                      this.setState({
+                       filter: selectedFilter
+                      })
+                      switch (selectedFilter) {
+                        case "recent":
+                        this.setState({
+                          showPostsByCategory: false,
+                          showPostsByVote: false,
+                          showPostsByDate: true
+                        })
+                          return posts
+                        case "category":
+                        this.setState({
+                         showPostsByCategory: true,
+                         showPostsByVote: false,
+                         showPostsByDate: false
+                        })
+                          return posts
+                        default:
+                        this.setState({
+                          showPostsByCategory: false,
+                          showPostsByVote: true,
+                          showPostsByDate: false
+                        })
+                          return posts
+                      }
+                    }}
+
+                  />
+              </div>
           </div>
-        </div>
       </div>
     )
   }
@@ -86,24 +110,46 @@ class App extends Component {
   4should have a control for adding a new post
 */
 
+function mapStateToProps (store, ownprops) {
+  const { postsReducer, voteReducer } = store
+  let posts = !postsReducer ? null : Object.values(postsReducer)[0]
+  let newData = !voteReducer.id ? false : voteReducer
 
-/*
-  WE MAP STATE TO PROPS SO THAT REDUX CAN MANAGE STATE when we pass in via connect() to make it available to components
-  This function returns where the data from all state and store(args) should go in the props.
-*/
-function mapStateToProps ({ posts, comments }) {
-  return null  //return a state object
+    try {
+      console.log('newData is: ', newData, newData.id)
+      console.log(posts[0].id)
+      console.log(newData.id === posts[0].id, posts[0].voteScore, newData.voteScore)
+    } catch(e){}
+
+    if (posts && newData) {
+      posts = posts.map((p) => {
+        if (p.id === newData.id ) {
+          p.voteScore = newData.voteScore
+          return p
+        }
+        return p
+      })
+      console.log("-============ posts ", posts)
+      return posts
+  }
+
+  return {
+    posts: posts// || Object.values(postsReducer)[0]
+  }
 }
+    // compponenet will receive props everytime the reducer is run so
+    // let voteScore = voteReducer.filter(score)=> score.id === post.id
 
 function mapDispatchToProps (dispatch) {
   return {
-    //functions that return functions that return the dispatched action
     onAddPost: (data) => dispatch(addPost(data)),
-    onUpVote: (data) => dispatch(upVote(data)),
-    onDownVote: (data) => dispatch(downVote(data)),
+    onUpVotePost: (data) => dispatch(upVote(data)),
+    onDownVotePost: (data) => dispatch(downVote(data)),
     onRemovePost: (data) => dispatch(removePost(data)),
     onAddComment: (data) => dispatch(addComment(data)),
-    onRemoveComment: (data) => dispatch(removeComment(data))
+    onRemoveComment: (data) => dispatch(removeComment(data)),
+    onUpVoteComment: (id, option) => dispatch(voteComment(option)),
+    onGetPosts: (data) => dispatch(GetPosts(data))
   }
 }
 
