@@ -117,8 +117,8 @@ function mapStateToProps (store, ownprops) {
 
     try {
       console.log('newData is: ', newData, newData.id)
-      console.log(posts[0].id)
-      console.log(newData.id === posts[0].id, posts[0].voteScore, newData.voteScore)
+      console.log('---OWNPROPS IS: ', ownprops)
+      //console.log(newData.id === posts[0].id, posts[0].voteScore, newData.voteScore)
     } catch(e){}
 
     if (posts && newData) {
@@ -129,12 +129,10 @@ function mapStateToProps (store, ownprops) {
         }
         return p
       })
-      console.log("-============ posts ", posts)
-      return posts
   }
 
   return {
-    posts: posts// || Object.values(postsReducer)[0]
+    posts: posts
   }
 }
     // compponenet will receive props everytime the reducer is run so
