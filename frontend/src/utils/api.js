@@ -12,16 +12,12 @@ export function getCategories () {
   .then((resolved) => resolved.categories) //
 }
 
-//Use to get any posts and then filter response accordingly
 export function getPosts () {
   return fetch(`${ api }/posts`, { headers })
   .then(function(response) {
-    // console.log('test 1');
     response = response.json()
-    // console.log('RESPONSE IS : ',response)
     return response
   }).then(function(resolved) {
-    // console.log('-------',resolved);
     return resolved
   })
 }
@@ -40,7 +36,12 @@ export const votePost = (postId, upVote_downVote) =>
     headers,
     option: upVote_downVote
   })
-  .then(apiResponse => apiResponse.json())
+
+  .then(function(apiResponse) {
+    return apiResponse.json();
+  })
+  .then((resolved) => resolved)
+  .catch((e) => e)
 
 export const deletePost = (postId) =>
 fetch(`${ api }/posts/${ postId }`, {
@@ -67,6 +68,7 @@ export const voteComment = (commentId, upVote_downVote) =>
     option: upVote_downVote
   })
   .then(apiResponse => apiResponse.json())
+  .then((resolved) => resolved)
 
 export const createComment = (newComment) =>
   fetch(`${ api }/comments`, {
