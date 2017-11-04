@@ -49,7 +49,7 @@ function postsReducer (state = [], action) {
     console.log('switch: ',posts, action.type);
       return {
         ...state,
-        [posts] : posts.map((post) => post)
+        [posts] : posts.map((post) => post).sort((a,b) => b.voteScore - a.voteScore)
       }
       // case ADD_POST:
       // return [

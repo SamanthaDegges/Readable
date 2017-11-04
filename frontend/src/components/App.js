@@ -14,8 +14,7 @@ class App extends Component {
     categories: [],
     comments: [],
     showPostsByCategory: false,
-    showPostsByDate: false,
-    showPostsByVote: true
+    showPostsByDate: false
   }
 
   componentDidMount(){
@@ -30,20 +29,8 @@ class App extends Component {
     })
   }
 
-  categorizePosts = (category, posts ) => {
-    posts.filter((each) => each.category === category)
-  }
-
-  rankPosts = () => {
-    this.posts.sort((a,b) => a.voteScore - b.voteScore)
-    }
-
-  chronoPosts = () => {
-    this.posts.sort((a,b) => a.timestamp - b.timestamp)
-  }
-
   render() {
-    const { showPostsByCategory, showPostsByVote, showPostsByDate, categories, filter } = this.state
+    const { showPostsByCategory, showPostsByDate, categories, filter } = this.state
     const { posts, allComments, onUpVotePost, onDownVotePost, onRemovePost, onAddPost, onGetPosts } = this.props
     return (
       <div className="App">
@@ -60,7 +47,6 @@ class App extends Component {
                     categories = {categories}
                     byCategory = {showPostsByCategory}
                     byDate = {showPostsByDate}
-                    byVote = {showPostsByVote}
                     posts = {posts}
                     onClickUp = {(post) => { onUpVotePost({id: post.id, voteScore: post.voteScore}) }}
                     onClickDown = {(post) => { onDownVotePost({id: post.id, voteScore:post.voteScore}) }}
@@ -73,24 +59,22 @@ class App extends Component {
                         case "recent":
                         this.setState({
                           showPostsByCategory: false,
-                          showPostsByVote: false,
                           showPostsByDate: true
                         })
-                          return posts
+                          return posts.sort((a,b) => b.timestamp - a.timestamp)
                         case "category":
                         this.setState({
                          showPostsByCategory: true,
-                         showPostsByVote: false,
                          showPostsByDate: false
                         })
                           return posts
                         default:
+                        console.log('default');
                         this.setState({
                           showPostsByCategory: false,
-                          showPostsByVote: true,
                           showPostsByDate: false
                         })
-                          return posts
+                          return posts.sort((a,b) => b.voteScore - a.voteScore)
                       }
                     }}
 
@@ -114,6 +98,7 @@ function mapStateToProps (store, ownprops) {
   const { postsReducer, voteReducer } = store
   let posts = !postsReducer ? null : Object.values(postsReducer)[0]
   let newData = !voteReducer.id ? false : voteReducer
+
 
     try {
       console.log('newData is: ', newData, newData.id)

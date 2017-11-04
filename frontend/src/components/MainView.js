@@ -1,14 +1,14 @@
 import React from 'react'
 import { convertTime, getTimeStamp } from '../utils/helpers'
 
-export default function MainView ({filter, onSort, posts, categories, onClickUp, onClickDown, byDate, byCategory, byVote }) {
+export default function MainView ({filter, onSort, posts, categories, onClickUp, onClickDown, byDate, byCategory }) {
   if (!posts){return <p>No Posts Yet</p>}
 
-console.log('------ posts passed in are: ', posts, byDate, byCategory, byVote)
+console.log('------ posts passed into APP are: ', posts, byDate, byCategory)
   return (
     <div className="posts">
       <div className = "selector">
-        View posts by: <select className="filter" value={filter ? filter : "POPULAR"} onChange={(event)=>onSort(posts, event.target.value)}>
+        View posts by: <select className="filter" value={filter ? filter : "popular"} onChange={(event)=>onSort(posts, event.target.value)}>
           <option value="recent">most recent</option>
           <option value="popular">most popular</option>
           <option value="category">topic</option>

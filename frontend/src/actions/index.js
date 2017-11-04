@@ -1,4 +1,3 @@
-import { getPosts } from '../utils/api'; //USE THESE FUNCTIONS TO UPDATE DB ONLY
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 export const ADD_POST = 'ADD_POST'
@@ -11,14 +10,10 @@ export const GET_POSTS = 'GET_POSTS'
 // export const VOTE_COMMENT = 'VOTE_COMMENT'
 
 export function GetPosts (posts) {
-  console.log('GetPosts action fired. Passed in: ', posts);
-  // getPosts().then((posts) => {
-    // console.log(posts);
     return {
       type: GET_POSTS,
       posts
     }
-  // })
 }
 
 export function addComment ({ title, timestamp, voteScore, body, author }) {
