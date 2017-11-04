@@ -15,7 +15,7 @@
   list-style-type: none;
 }
 
-.postVoteScore, .voteChunk i {
+.postVoteScore, .voteChunk , .voteChunk i {
   text-align: right;
   float: right;
   color: magenta;
