@@ -65,7 +65,7 @@ export const voteComment = (commentId, upVote_downVote) =>
   fetch(`${ api }/comments${ commentId }`, {
     headers,
     method: 'POST',
-    option: upVote_downVote
+    body: JSON.stringify({option: upVote_downVote})
   })
   .then(apiResponse => apiResponse.json())
   .then((resolved) => resolved)
