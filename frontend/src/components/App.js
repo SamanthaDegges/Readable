@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../App.css'
-import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api' //USE THESE FUNCTIONS TO UPDATE DB ONLY
+import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api'
 import SectionList from './SectionList'
 import PostList from './PostList'
 import MainView from './MainView'
@@ -141,8 +141,8 @@ function mapStateToProps (store, ownprops) {
 function mapDispatchToProps (dispatch) {
   return {
     onAddPost: (data) => dispatch(addPost(data)),
-    onUpVotePost: (data) => dispatch(upVote(data)),
-    onDownVotePost: (data) => dispatch(downVote(data)),
+    onUpVotePost: (data) => votePost(data.id, "upVote").then(dispatch(upVote(data))),
+    onDownVotePost: (data) => votePost(data.id, "downVote").then(dispatch(downVote(data))),
     onRemovePost: (data) => dispatch(removePost(data)),
     onAddComment: (data) => dispatch(addComment(data)),
     onRemoveComment: (data) => dispatch(removeComment(data)),
