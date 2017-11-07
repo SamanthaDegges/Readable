@@ -22,6 +22,26 @@ const defaultData = {
     voteScore: -5,
     deleted: false,
     parentDeleted: false
+  },
+  "123qwe4ut84ut8v4t8qwe12q": {
+    id: '123qwe4ut84ut8v4t8qwe12q',
+    parentId: "1ze2u4ziyjabvozdd253nd",
+    timestamp: 1468166872634,
+    body: 'Hi there! I am a COMMENT.Hi there! I am a COMMENT.Hi there! I am a COMMENT.Hi there! I am a COMMENT.Hi there! I am a COMMENT.',
+    author: 'thingtwo',
+    voteScore: 6,
+    deleted: true,
+    parentDeleted: false
+  },
+  "9tu4bsun805n8un48zx12": {
+    id: '9tu4bsun805n8un48zx12',
+    parentId: "1ze2u4ziyjabvozdd253nd",
+    timestamp: 1469479767190,
+    body: 'Comments. Are. Cool.Comments. Are. Cool.Comments. Are. Cool.Comments. Are. Cool.',
+    author: 'Someone Somewhere',
+    voteScore: 0,
+    deleted: false,
+    parentDeleted: false
   }
 }
 
