@@ -36,7 +36,6 @@
 }
 
 #postChunk {
-  margin-bottom: 5px;
 }
 
 .posts .selector {
@@ -45,6 +44,15 @@
 }
 
 .subSection {
-float: left;
-text-transform: uppercase;
+  float: left;
+  text-transform: uppercase;
+}
+
+.icon {
+  margin: 0px 4px 0px 11px;
+  line-height: normal;
+  font-size: 17px;
+}
+.commentCount {
+  float: left;
 }

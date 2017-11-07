@@ -29,14 +29,14 @@ console.log('------ posts passed into APP are: ', posts, byDate, byCategory, com
                   <i className="fi-dislike large" onClick = {() => onClickDown(post)} ></i>
                 </div>
                 <div className="postContent">
-                  <h6 className="postAuthor">{post.author} on {convertTime(post.timestamp)}</h6>
-                  <p className="postBody">
-                  <i className="fi-pencil"></i><i className="fi-x"></i>
-                  {post.body}
+                  <p className="postAuthor">{post.author} on {convertTime(post.timestamp)}
+                    <i className="fi-pencil icon" onClick = {() => onClickEditP()}></i>
+                    <i className="fi-x icon" onClick = {() => onClickDeleteP(post)}></i>
+                    <div>{post.body}</div>
+                    <div className="commentCount">
+                      <i className="fi-comment"></i> {comments && comments.filter((c)=> c.parentId === post.id).length} comments
+                    </div>
                   </p>
-                </div>
-                <div>
-                  <p>Edit | Delete </p>
                 </div>
               </div>
               ))}
@@ -56,20 +56,14 @@ console.log('------ posts passed into APP are: ', posts, byDate, byCategory, com
                   <i className="fi-dislike large" onClick = {() => onClickDown(post)} ></i>
                 </div>
                 <div className="postContent">
-                  <h6 className="postAuthor">{post.author} on {convertTime(post.timestamp)}</h6>
-                  <i className="fi-pencil" onClick = {() => onClickEditP({id: "8xf0y6ziyjabvozdd253nd", title: "testing Title", body: "test body.", category:"react"})}></i> //post will be post with the post with edits, sent as an object from form
-                  <i className="fi-x" onClick = {() => onClickDeleteP(post)}></i>
-                  <p className="postBody">
-                    {post.body}
-                  </p>
-                    <div>
-
-                      <p> <i className="fi-comment"></i> {comments && comments.filter((c)=> c.parentId === post.id).length}</p>
+                  <p className="postAuthor">{post.author} on {convertTime(post.timestamp)}
+                    <i className="fi-pencil icon" onClick = {() => onClickEditP()}></i>
+                    <i className="fi-x icon" onClick = {() => onClickDeleteP(post)}></i>
+                    <div>{post.body}</div>
+                    <div className="commentCount">
+                      <i className="fi-comment"></i> {comments && comments.filter((c)=> c.parentId === post.id).length} comments
                     </div>
-                </div>
-
-                <div>
-                  <p>Edit | Delete </p>
+                  </p>
                 </div>
               </div>
               ))}
