@@ -5,19 +5,20 @@ import { getCategories, votePost, createPost, deletePost, editPost, voteComment,
 import SectionList from './SectionList'
 import PostList from './PostList'
 import MainView from './MainView'
-import { addPost, upVote, downVote, removePost, addComment, removeComment, GetPosts  } from '../actions'
+import { addPost, upVote, downVote, RemovePost, addComment, removeComment, GetPosts, GetComments, EditPost  } from '../actions'
 
 class App extends Component {
 
   state = {
+    //testP: {id: "8xf0y6ziyjabvozdd253nd", title: "testing Title", body: "test body."},
     filter: "",
     categories: [],
-    comments: [],
     showPostsByCategory: false,
     showPostsByDate: false
   }
 
-  componentDidMount(){
+  componentWillMount(){
+    // console.log('willMount');
     getCategories().then((categories) => {
       this.setState(state => ({
         categories: categories
@@ -26,12 +27,58 @@ class App extends Component {
 
     getPosts().then((posts) => {
       this.props.onGetPosts(posts)
+      posts && posts.map((p) => {
+        new Promise((resolve, reject) => {
+          resolve(this.props.onGetComments(p.id))
+        }).then((data) => {
+          console.log(data)
+        }).catch((error) => {
+          console.log('GET COMMENTS PROMISE REJECTED, ', error)
+        })
     })
+
+
+
+      // {
+      //     // console.log('Mapping posts and calling onGetComments with pId: ', p.id)
+      //     this.props.onGetComments(p.id)
+      //     console.log(this.props.onGetComments(p.id))
+      //   })
+
+    })
+
+    // let myFirstPromise = new Promise((resolve, reject) => {
+    //   // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
+    //   // In this example, we use setTimeout(...) to simulate async code.
+    //   // In reality, you will probably be using something like XHR or an HTML5 API.
+    //   setTimeout(function(){
+    //     resolve("Success!"); // Yay! Everything went well!
+    //   }, 250);
+    // });
+    //
+    // myFirstPromise.then((successMessage) => {
+    //   // successMessage is whatever we passed in the resolve(...) function above.
+    //   // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
+    //   console.log("Yay! " + successMessage);
+    // });
+
+
+    // this.props.posts && this.props.posts.map((p) => {
+    //   console.log('comments from componentDidMount FIRED');
+    //   this.props.onGetComments(p.id)
+    // })
+
   }
+
+  // posts && posts.map((p) => {
+  //     console.log('comments from componentDidMount FIRED')
+  //     this.props.onGetComments(p.id)
+  //   })
+
 
   render() {
     const { showPostsByCategory, showPostsByDate, categories, filter } = this.state
-    const { posts, allComments, onUpVotePost, onDownVotePost, onRemovePost, onAddPost, onGetPosts } = this.props
+    const { posts, comments, onUpVotePost, onDownVotePost, onRemovePost, onEditPost, onGetPosts } = this.props
     return (
       <div className="App">
           <div className="row">
@@ -43,6 +90,7 @@ class App extends Component {
               </div>
               <div id="mainColumn" className = "col-xs-12 col-md-8 offset-md-1">
                   <MainView
+                    comments = {comments}
                     filter = {filter}
                     categories = {categories}
                     byCategory = {showPostsByCategory}
@@ -50,8 +98,9 @@ class App extends Component {
                     posts = {posts}
                     onClickUp = {(post) => { onUpVotePost({id: post.id, voteScore: post.voteScore}) }}
                     onClickDown = {(post) => { onDownVotePost({id: post.id, voteScore:post.voteScore}) }}
+                    onClickDeleteP = {(post) => {onRemovePost(post)}}
+                    onClickEditP = {(testP) => {onEditPost(testP)}}
                     onSort = {(posts, selectedFilter) => {
-                      console.log(selectedFilter, posts)
                       this.setState({
                        filter: selectedFilter
                       })
@@ -95,43 +144,78 @@ class App extends Component {
 */
 
 function mapStateToProps (store, ownprops) {
-  const { postsReducer, voteReducer } = store
+  const { postReducer, postsReducer, voteReducer, Comments} = store
+  let comments = !Comments ? null : Object.values(Comments).reduce((a, b) => a.concat(b), [])
+  console.log('=======================',comments)
   let posts = !postsReducer ? null : Object.values(postsReducer)[0]
-  let newData = !voteReducer.id ? false : voteReducer
-
+  let newPostVote = !voteReducer.id ? false : voteReducer
+  let updatedPost = postReducer && postReducer.deleted === false ? postReducer : "fail"
+  console.log('Checking ',updatedPost, postReducer) //returns blank
 
     try {
-      console.log('newData is: ', newData, newData.id)
-      console.log('---OWNPROPS IS: ', ownprops)
-      //console.log(newData.id === posts[0].id, posts[0].voteScore, newData.voteScore)
+      // console.log('newPostVote is: ', newPostVote, newPostVote.id)
+      // console.log('---OWNPROPS IS: ', ownprops)
+      //console.log('COMMENTS ARE ', store.Comments);
+      //console.log(newPostVote.id === posts[0].id, posts[0].voteScore, newPostVote.voteScore)
     } catch(e){}
 
-    if (posts && newData) {
+    if (posts && newPostVote) {
       posts = posts.map((p) => {
-        if (p.id === newData.id ) {
-          p.voteScore = newData.voteScore
+        if (p.id === newPostVote.id ) {
+          p.voteScore = newPostVote.voteScore
           return p
         }
         return p
       })
-  }
+    }
+
+    if (posts && updatedPost) {
+      console.log('TESTING ',updatedPost) //The reducer is not showing default post data.
+
+      posts = posts.map((p) => {
+        if (p.id === updatedPost.id){
+          console.log('TESTING match ',p, updatedPost);
+          p.body = updatedPost.body
+          p.category = updatedPost.category
+          p.title = updatedPost.title
+          return p
+        }
+        // console.log('TESTING. p now is: ',p);
+        return p
+      })
+    }
 
   return {
-    posts: posts
+    posts: posts && posts.filter((p)=>p.deleted === false),
+    comments: comments
   }
 }
-    // compponenet will receive props everytime the reducer is run so
-    // let voteScore = voteReducer.filter(score)=> score.id === post.id
 
+/*
+@ dispatch arguments must be in object format
+*/
 function mapDispatchToProps (dispatch) {
   return {
     onAddPost: (data) => dispatch(addPost(data)),
     onUpVotePost: (data) => votePost(data.id, "upVote").then(dispatch(upVote(data))),
     onDownVotePost: (data) => votePost(data.id, "downVote").then(dispatch(downVote(data))),
-    onRemovePost: (data) => dispatch(removePost(data)),
+    onRemovePost: (post) => deletePost(post.id).then((data)=>dispatch(RemovePost({post: data}))),
     onAddComment: (data) => dispatch(addComment(data)),
     onRemoveComment: (data) => dispatch(removeComment(data)),
     onUpVoteComment: (id, option) => dispatch(voteComment(option)),
+    onGetComments: (pId) => getComments(pId).then((data)=>dispatch(GetComments({comments: data}))),
+    onEditPost: (post) => editPost(post.id, post).then((data)=>dispatch(EditPost(data.edit))), //sends nested into edit of each post.
+
+    //
+    // onGetComments: function(data) {
+    //   console.log('-------DATA 1', data)
+    //   getComments(data).then(function(data) {
+    //     console.log('-------DATA 2: ', data)
+    //     // console.log(dispatch(GetComments({comments: data})));
+    //     return dispatch(GetComments({comments: data}))
+    //   })
+    // },
+
     onGetPosts: (data) => dispatch(GetPosts(data))
   }
 }

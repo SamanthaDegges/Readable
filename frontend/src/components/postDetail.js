@@ -1,8 +1,16 @@
 import React from 'react'
 
-export default function PostDetail ({ post }) {
+export default function PostDetail ({ post, comments }) {
   const { id, title, body, author, timestamp, voteScore } = post
-  return null
+  return (
+    <div>
+      <h6>POST DETAIL COMPONENT</h6>
+      <Comments
+        pId = {post.id}
+        comments = {comments.filter((c)=> c.parentId === post.id)}
+        />
+    </div>
+  )
   /*
 Post Detail View
 should show the details of a post, including: Title, Body, Author, timestamp (in user readable format), and vote score

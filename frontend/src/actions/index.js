@@ -5,9 +5,17 @@ export const REMOVE_POST = 'REMOVE_POST'
 export const UP_VOTE = 'UP_VOTE'
 export const DOWN_VOTE = 'DOWN_VOTE'
 export const GET_POSTS = 'GET_POSTS'
-
+export const GET_COMMENTS = 'GET_COMMENTS'
+export const EDIT_POST = 'EDIT_POST'
 
 // export const VOTE_COMMENT = 'VOTE_COMMENT'
+export function GetComments ({ comments }) {
+  console.log('Passed into action: ', comments)
+  return {
+    type: GET_COMMENTS,
+    comments
+  }
+}
 
 export function GetPosts (posts) {
     return {
@@ -76,9 +84,17 @@ export function addPost ({ post }) {
   }
 }
 
-export function removePost ({ post }) {
+export function RemovePost ({ post }) {
   return {
     type: REMOVE_POST,
+    post
+  }
+}
+
+export function EditPost ( post ) { //trying this instead of assuming { post } 
+  console.log('in action: ', post);
+  return {
+    type: EDIT_POST,
     post
   }
 }

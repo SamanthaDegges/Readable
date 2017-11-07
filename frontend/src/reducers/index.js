@@ -8,6 +8,8 @@ import {
   UP_VOTE,
   DOWN_VOTE,
   GET_POSTS,
+  GET_COMMENTS,
+  EDIT_POST
 } from '../actions'
 
 const initialCommentState = {
@@ -42,15 +44,29 @@ function commentReducer (state = initialCommentState, action) {
   }
 }
 
+function Comments (state = [], action) {
+  const { comments } = action
+  switch (action.type) {
+    case GET_COMMENTS:
+    return {
+      ...state,
+      [comments] : comments.map((comment) => comment)
+    }
+    default:
+    return state
+  }
+}
+
 function postsReducer (state = [], action) {
   const { posts } = action
   switch (action.type) {
     case GET_POSTS:
-    console.log('switch: ',posts, action.type);
+    // console.log('switch: ',posts, action.type);
       return {
         ...state,
-        [posts] : posts.map((post) => post).sort((a,b) => b.voteScore - a.voteScore)
+        [posts] : posts.filter((p) => p.deleted === false).sort((a,b) => b.voteScore - a.voteScore)
       }
+      //SHOULD PROBABLY FILTER POSTS SO THAT ONLY THE IS:DELETED === FALSE ARE RETURNED
       // case ADD_POST:
       // return [
       //   ...state,
@@ -77,6 +93,7 @@ const initialPostState = {
 function postReducer (state = initialPostState, action) {
   //for editing post content
   const { id, title, body, author, category, deleted } = action
+  console.log('passed into REDUCER: ',action);
 
   switch (action.type) {
     case ADD_POST:
@@ -93,6 +110,15 @@ function postReducer (state = initialPostState, action) {
         ...state,
         deleted: true
       }
+    case EDIT_POST:
+    console.log('editing post, in reducer, still ', action, action.post.title, action.post);
+        return {
+          ...state,
+          title: action.post.title,
+          body: action.post.body,
+          id: action.post.id,
+          category: action.post.category
+        }
     default:
     return state
   }
@@ -124,5 +150,6 @@ export default combineReducers({
   commentReducer,
   postReducer,
   voteReducer,
-  postsReducer
+  postsReducer,
+  Comments
 })

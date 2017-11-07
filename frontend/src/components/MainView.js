@@ -1,10 +1,11 @@
 import React from 'react'
 import { convertTime, getTimeStamp } from '../utils/helpers'
+import Comments from './Comments'
 
-export default function MainView ({filter, onSort, posts, categories, onClickUp, onClickDown, byDate, byCategory }) {
+export default function MainView ({filter, onSort, posts, comments, categories, onClickUp, onClickDown, byDate, byCategory, onClickEditP, onClickDeleteP }) {
   if (!posts){return <p>No Posts Yet</p>}
 
-console.log('------ posts passed into APP are: ', posts, byDate, byCategory)
+console.log('------ posts passed into APP are: ', posts, byDate, byCategory, comments)
   return (
     <div className="posts">
       <div className = "selector">
@@ -29,7 +30,13 @@ console.log('------ posts passed into APP are: ', posts, byDate, byCategory)
                 </div>
                 <div className="postContent">
                   <h6 className="postAuthor">{post.author} on {convertTime(post.timestamp)}</h6>
-                  <p className="postBody">{post.body}</p>
+                  <p className="postBody">
+                  <i className="fi-pencil"></i><i className="fi-x"></i>
+                  {post.body}
+                  </p>
+                </div>
+                <div>
+                  <p>Edit | Delete </p>
                 </div>
               </div>
               ))}
@@ -50,7 +57,19 @@ console.log('------ posts passed into APP are: ', posts, byDate, byCategory)
                 </div>
                 <div className="postContent">
                   <h6 className="postAuthor">{post.author} on {convertTime(post.timestamp)}</h6>
-                  <p className="postBody">{post.body}</p>
+                  <i className="fi-pencil" onClick = {() => onClickEditP({id: "8xf0y6ziyjabvozdd253nd", title: "testing Title", body: "test body.", category:"react"})}></i> //post will be post with the post with edits, sent as an object from form
+                  <i className="fi-x" onClick = {() => onClickDeleteP(post)}></i>
+                  <p className="postBody">
+                    {post.body}
+                  </p>
+                    <div>
+
+                      <p> <i className="fi-comment"></i> {comments && comments.filter((c)=> c.parentId === post.id).length}</p>
+                    </div>
+                </div>
+
+                <div>
+                  <p>Edit | Delete </p>
                 </div>
               </div>
               ))}

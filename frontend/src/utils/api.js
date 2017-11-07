@@ -89,6 +89,8 @@ export const editComment = (commentId, edit) =>
 export const getComments = (postId) =>
   fetch(`${ api }/posts/${ postId }/comments`, { headers }) //get all comments for a particular post
   .then(apiResponse => apiResponse.json())
+  .then((resolved) => resolved)
+  .catch((e) => e)
 
 export const getComment = (commentId) =>
   fetch(`${ api }/comments/${ commentId }`, { headers }) //get details of one comment
