@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import '../App.css'
 import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api'
 import SectionList from './SectionList'
 import PostList from './PostList'
 import MainView from './MainView'
+import Section from './Section'
 import { addPost, upVote, downVote, RemovePost, addComment, removeComment, GetPosts, GetComments, EditPost  } from '../actions'
 
 class App extends Component {
 
   state = {
-    //testP: {id: "8xf0y6ziyjabvozdd253nd", title: "testing Title", body: "test body."},
     filter: "",
     categories: [],
     showPostsByCategory: false,
@@ -18,7 +19,6 @@ class App extends Component {
   }
 
   componentWillMount(){
-    // console.log('willMount');
     getCategories().then((categories) => {
       this.setState(state => ({
         categories: categories
@@ -35,102 +35,77 @@ class App extends Component {
         }).catch((error) => {
           console.log('GET COMMENTS PROMISE REJECTED, ', error)
         })
+      })
     })
-
-
-
-      // {
-      //     // console.log('Mapping posts and calling onGetComments with pId: ', p.id)
-      //     this.props.onGetComments(p.id)
-      //     console.log(this.props.onGetComments(p.id))
-      //   })
-
-    })
-
-    // let myFirstPromise = new Promise((resolve, reject) => {
-    //   // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
-    //   // In this example, we use setTimeout(...) to simulate async code.
-    //   // In reality, you will probably be using something like XHR or an HTML5 API.
-    //   setTimeout(function(){
-    //     resolve("Success!"); // Yay! Everything went well!
-    //   }, 250);
-    // });
-    //
-    // myFirstPromise.then((successMessage) => {
-    //   // successMessage is whatever we passed in the resolve(...) function above.
-    //   // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
-    //   console.log("Yay! " + successMessage);
-    // });
-
-
-    // this.props.posts && this.props.posts.map((p) => {
-    //   console.log('comments from componentDidMount FIRED');
-    //   this.props.onGetComments(p.id)
-    // })
-
   }
-
-  // posts && posts.map((p) => {
-  //     console.log('comments from componentDidMount FIRED')
-  //     this.props.onGetComments(p.id)
-  //   })
-
 
   render() {
     const { showPostsByCategory, showPostsByDate, categories, filter } = this.state
-    const { posts, comments, onUpVotePost, onDownVotePost, onRemovePost, onEditPost, onGetPosts } = this.props
+    const { posts, comments, onUpVotePost, onDownVotePost, onRemovePost, onEditPost, onGetPosts, history } = this.props
     return (
-      <div className="App">
+
+        <div className="App">
           <div className="row">
+
             <div id="sideBar" className = "sidebar-offcanvas col-xs-6 col-md-2">
-            {categories !== null && (
-              <SectionList
-              categories={categories}
-              />)}
-              </div>
-              <div id="mainColumn" className = "col-xs-12 col-md-8 offset-md-1">
-                  <MainView
-                    comments = {comments}
-                    filter = {filter}
-                    categories = {categories}
-                    byCategory = {showPostsByCategory}
-                    byDate = {showPostsByDate}
-                    posts = {posts}
-                    onClickUp = {(post) => { onUpVotePost({id: post.id, voteScore: post.voteScore}) }}
-                    onClickDown = {(post) => { onDownVotePost({id: post.id, voteScore:post.voteScore}) }}
-                    onClickDeleteP = {(post) => {onRemovePost(post)}}
-                    onClickEditP = {(testP) => {onEditPost(testP)}}
-                    onSort = {(posts, selectedFilter) => {
+              {categories !== null && (
+                <SectionList
+                categories={categories}
+                />)}
+            </div>
+            <div id="mainColumn" className = "col-xs-12 col-md-8 offset-md-1">
+              <Route
+              exact path="/"
+              render{({...this.props})=>(
+                <MainView
+                  comments = {comments}
+                  filter = {filter}
+                  categories = {categories}
+                  byCategory = {showPostsByCategory}
+                  byDate = {showPostsByDate}
+                  posts = {posts}
+                  onClickUp = {(post) => { onUpVotePost({id: post.id, voteScore: post.voteScore}) }}
+                  onClickDown = {(post) => { onDownVotePost({id: post.id, voteScore:post.voteScore}) }}
+                  onClickDeleteP = {(post) => {onRemovePost(post)}}
+                  onClickEditP = {(testP) => {onEditPost(testP)}}
+                  onSort = {(posts, selectedFilter) => {
+                    this.setState({
+                     filter: selectedFilter
+                    })
+                    switch (selectedFilter) {
+                      case "recent":
                       this.setState({
-                       filter: selectedFilter
+                        showPostsByCategory: false,
+                        showPostsByDate: true
                       })
-                      switch (selectedFilter) {
-                        case "recent":
-                        this.setState({
-                          showPostsByCategory: false,
-                          showPostsByDate: true
-                        })
-                          return posts.sort((a,b) => b.timestamp - a.timestamp)
-                        case "category":
-                        this.setState({
-                         showPostsByCategory: true,
-                         showPostsByDate: false
-                        })
-                          return posts
-                        default:
+                        return posts.sort((a,b) => b.timestamp - a.timestamp)
+                      case "category":
+                      this.setState({
+                       showPostsByCategory: true,
+                       showPostsByDate: false
+                      })
+                        return posts
+                      default:
                         console.log('default');
                         this.setState({
                           showPostsByCategory: false,
                           showPostsByDate: false
                         })
-                          return posts.sort((a,b) => b.voteScore - a.voteScore)
-                      }
-                    }}
+                        return posts.sort((a,b) => b.voteScore - a.voteScore)
+                    }
+                  }}
+                />
+              )}/>
 
-                  />
-              </div>
+              <Route path="/react"
+                component={Section}
+              />
+
+
           </div>
+        </div>
       </div>
+
     )
   }
 }
@@ -143,16 +118,16 @@ class App extends Component {
   4should have a control for adding a new post
 */
 
-function mapStateToProps (store, ownprops) {
+function mapStateToProps (store, ownprops, history) {
   const { postReducer, postsReducer, voteReducer, Comments} = store
   let comments = !Comments ? null : Object.values(Comments).reduce((a, b) => a.concat(b), [])
-  console.log('=======================',comments)
   let posts = !postsReducer ? null : Object.values(postsReducer)[0]
   let newPostVote = !voteReducer.id ? false : voteReducer
   let updatedPost = postReducer && postReducer.deleted === false ? postReducer : "fail"
-  console.log('Checking ',updatedPost, postReducer) //returns blank
 
     try {
+      console.log(history);
+      // console.log('Checking ',updatedPost, postReducer) //returns blank
       // console.log('newPostVote is: ', newPostVote, newPostVote.id)
       // console.log('---OWNPROPS IS: ', ownprops)
       //console.log('COMMENTS ARE ', store.Comments);
@@ -170,8 +145,6 @@ function mapStateToProps (store, ownprops) {
     }
 
     if (posts && updatedPost) {
-      console.log('TESTING ',updatedPost) //The reducer is not showing default post data.
-
       posts = posts.map((p) => {
         if (p.id === updatedPost.id){
           console.log('TESTING match ',p, updatedPost);
@@ -180,7 +153,6 @@ function mapStateToProps (store, ownprops) {
           p.title = updatedPost.title
           return p
         }
-        // console.log('TESTING. p now is: ',p);
         return p
       })
     }

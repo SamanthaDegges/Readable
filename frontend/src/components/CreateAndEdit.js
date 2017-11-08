@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CreateAndEdit ({ postOrComment }) { //i can pass in "post" or "comment"
+export default function CreateAndEdit ({ postOrComment, newPost }) { //i can pass in "post" or "comment"
 
   if (postOrComment == newPost) {
       return <form>Create a New Post</form>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function SectionList ({ categories }) {
   function willDoOnClick() {
@@ -13,9 +14,15 @@ export default function SectionList ({ categories }) {
         </h5>
         <div className="list-group">
           {categories.map((each) => ( //onclick, each category can then call a function to populate posts(of that cateogry and then display them)
-              <a key={each.name} className = "list-group-item"> {/*onClick={show listed posts for that categry)} */}
-              {each.name}
-              </a>
+
+            <Link
+            className = "list-group-item"
+            key={each.name}
+            to="/react"
+            >{each.name}</Link>
+              // <a key={each.name} className = "list-group-item"> {/*onClick={show listed posts for that categry)} */}
+              // {each.name}
+              // </a>
             ))}
         </div>
       </div>
