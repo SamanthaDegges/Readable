@@ -56,7 +56,7 @@ class App extends Component {
             <div id="mainColumn" className = "col-xs-12 col-md-8 offset-md-1">
               <Route
               exact path="/"
-              render{({...this.props})=>(
+              render = {()=>(
                 <MainView
                   comments = {comments}
                   filter = {filter}
@@ -98,7 +98,31 @@ class App extends Component {
               )}/>
 
               <Route path="/react"
-                component={Section}
+              render = {()=>(
+                <Section
+                category = "react"
+                comments = {comments}
+                posts = {posts}
+                />
+              )}
+              />
+              <Route path="/redux"
+                render = {()=>(
+                  <Section
+                  category = "redux"
+                  comments = {comments}
+                  posts = {posts}
+                  />
+              )}
+              />
+              <Route path="/udacity"
+                render = {()=>(
+                  <Section
+                  category = "udacity"
+                  comments = {comments}
+                  posts = {posts}
+                  />
+              )}
               />
 
 

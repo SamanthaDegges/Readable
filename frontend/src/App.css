@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.selector {
+  float: right;
+}
+
 #sideBar {
   background-color: darkgrey;
   padding: 30px;
@@ -26,20 +30,15 @@
 }
 
 .postTitle {
-  float: left;
   color: magenta;
 }
 
-.postContent, .postBody, .postAuthor, #postChunk {
-  float: left;
+.post {
   text-align: left;
+  margin-bottom: 10px;
 }
 
-#postChunk {
-}
-
-.posts .selector {
-  float: right !important;
+.posts {
   padding-bottom: 15px;
 }
 
@@ -53,6 +52,7 @@
   line-height: normal;
   font-size: 17px;
 }
-.commentCount {
-  float: left;
+
+.subTitle {
+  font-size: 90%;
 }
