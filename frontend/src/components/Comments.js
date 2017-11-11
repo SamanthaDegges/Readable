@@ -1,37 +1,37 @@
 import React from 'react'
 import Modal from 'react-modal'
+import { convertTime } from '../utils/helpers'
 
-// componentWillMount(){
-//   console.log('CommentWillMOUNT.');
-//   this.props.posts && this.props.posts.map((p) => {
-//     console.log('comments from componentDidMount FIRED');
-//     this.props.onGetComments(p.id)
-//   })
-// }
-//
-// isOpen={foodModalOpen}
-// onRequestClose={this.closeFoodModal}
+/*
+<Modal
+className='modal'
+overlayClassName='overlay'
 
-export default function Comments ({ comments }) {
-  if (!comments){return null}
+contentLabel='Modal'
+/>
+*/
+export default function Comments ({ post, comments }) {
+  if (!comments||!post) { return null }
+  let allComments = comments.filter((c)=> c.parentId === post.id && c.deleted === false)
 
   return (
-    <div>
-    {comments.map((c)=> (
-      <div>{c.author} says:
-        <p>{c.body}</p>
+    <div className="comments">
+    {allComments.map((comment)=>
+      <div className="postComment">
+          <div className="voteChunk">
+            <i className="fi-like"></i>
+            <div className="voteNumber">{comment.voteScore}</div>
+            <i className="fi-dislike"></i>
+            <div className="subTitle"><span>{comment.author}</span> commented: </div>
+            <div className="date">{convertTime(comment.timestamp)}</div>
+          </div>
+          <div className="commentBody">
+            <div className="indent">
+            <p>{comment.body}</p>
+          </div>
+          </div>
       </div>
-    ))}
-
-
-      <Modal
-        className='modal'
-        overlayClassName='overlay'
-
-        contentLabel='Modal'
-      />
-
-
+    )}
     </div>
   )
 }

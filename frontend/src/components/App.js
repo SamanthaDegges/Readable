@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Link, } from 'react-router-dom'
 import { connect } from 'react-redux'
 import '../App.css'
 import { getCategories, votePost, createPost, deletePost, editPost, voteComment, getPosts, createComment, editComment, getComments, getComment, deleteComment } from '../utils/api'
 import SectionList from './SectionList'
-import PostList from './PostList'
+import Post from './Post'
 import MainView from './MainView'
 import Section from './Section'
 import { addPost, upVote, downVote, RemovePost, addComment, removeComment, GetPosts, GetComments, EditPost  } from '../actions'
@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
     const { showPostsByCategory, showPostsByDate, categories, filter } = this.state
-    const { posts, comments, onUpVotePost, onDownVotePost, onRemovePost, onEditPost, onGetPosts, history } = this.props
+    const { posts, comments, onUpVotePost, onDownVotePost, onRemovePost, onEditPost} = this.props
     return (
 
         <div className="App">
@@ -54,8 +54,7 @@ class App extends Component {
                 />)}
             </div>
             <div id="mainColumn" className = "col-xs-12 col-md-8 offset-md-1">
-              <Route
-              exact path="/"
+              <Route exact path="/"
               render = {()=>(
                 <MainView
                   comments = {comments}
@@ -97,33 +96,46 @@ class App extends Component {
                 />
               )}/>
 
-              <Route path="/react"
-              render = {()=>(
+              <Route exact path="/react"
+              render = {()=>
                 <Section
                 category = "react"
                 comments = {comments}
                 posts = {posts}
+                onClickUp = {(post) => {onUpVotePost({id: post.id, voteScore: post.voteScore})}}
+                onClickDown = {(post) => {onDownVotePost({id: post.id, voteScore:post.voteScore})}}
+                onClickDeleteP = {(post) => {onRemovePost(post)}}
+                onClickEditP = {(post) => {onEditPost(post)}}
                 />
-              )}
+                }
               />
               <Route path="/redux"
-                render = {()=>(
+                render = {()=>
                   <Section
                   category = "redux"
                   comments = {comments}
                   posts = {posts}
+                  onClickUp = {(post) => {onUpVotePost({id: post.id, voteScore: post.voteScore})}}
+                  onClickDown = {(post) => {onDownVotePost({id: post.id, voteScore:post.voteScore})}}
+                  onClickDeleteP = {(post) => {onRemovePost(post)}}
+                  onClickEditP = {(post) => {onEditPost(post)}}
                   />
-              )}
+                }
               />
               <Route path="/udacity"
-                render = {()=>(
+                render = {()=>
                   <Section
                   category = "udacity"
                   comments = {comments}
                   posts = {posts}
+                  onClickUp = {(post) => {onUpVotePost({id: post.id, voteScore: post.voteScore})}}
+                  onClickDown = {(post) => {onDownVotePost({id: post.id, voteScore:post.voteScore})}}
+                  onClickDeleteP = {(post) => {onRemovePost(post)}}
+                  onClickEditP = {(post) => {onEditPost(post)}}
                   />
-              )}
+                }
               />
+
 
 
           </div>
@@ -142,7 +154,7 @@ class App extends Component {
   4should have a control for adding a new post
 */
 
-function mapStateToProps (store, ownprops, history) {
+function mapStateToProps (store, ownprops) {
   const { postReducer, postsReducer, voteReducer, Comments} = store
   let comments = !Comments ? null : Object.values(Comments).reduce((a, b) => a.concat(b), [])
   let posts = !postsReducer ? null : Object.values(postsReducer)[0]
@@ -150,7 +162,7 @@ function mapStateToProps (store, ownprops, history) {
   let updatedPost = postReducer && postReducer.deleted === false ? postReducer : "fail"
 
     try {
-      console.log(history);
+      //console.log(history);
       // console.log('Checking ',updatedPost, postReducer) //returns blank
       // console.log('newPostVote is: ', newPostVote, newPostVote.id)
       // console.log('---OWNPROPS IS: ', ownprops)
@@ -187,9 +199,6 @@ function mapStateToProps (store, ownprops, history) {
   }
 }
 
-/*
-@ dispatch arguments must be in object format
-*/
 function mapDispatchToProps (dispatch) {
   return {
     onAddPost: (data) => dispatch(addPost(data)),

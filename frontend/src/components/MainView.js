@@ -1,8 +1,6 @@
 import React from 'react'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
-import { convertTime, getTimeStamp } from '../utils/helpers'
-import Comments from './Comments'
-import PostList from './PostList'
+import Post from './Post'
+import CommentCount from './CommentCount'
 
 export default function MainView ({filter, onSort, posts, comments, categories, onClickUp, onClickDown, byDate, byCategory, onClickEditP, onClickDeleteP }) {
   if (!posts){return <p>No Posts Yet</p>}
@@ -25,16 +23,20 @@ console.log('------ posts passed into APP are: ', posts, byDate, byCategory, com
             <div className="row">
               <h5 key={c.name} className="subSection">{c.name}</h5>
             </div>
-              <div id="postChunk">
+              <div className="postChunk">
               {posts.filter((p)=> p.category === c.name).map((post)=> (
-                <div key={post.id} id="postChunk">
-                  <PostList
+                <div key={post.id}>
+                  <Post
                     post = {post}
                     onClickUp = {onClickUp}
                     onClickDown = {onClickDown}
                     onClickEditP = {onClickEditP}
                     onClickDeleteP = {onClickDeleteP}
                     comments = {comments}
+                  />
+                  <CommentCount
+                    post = {post}
+                    comments ={comments}
                   />
                 </div>
                 ))}
@@ -43,16 +45,21 @@ console.log('------ posts passed into APP are: ', posts, byDate, byCategory, com
         ))}
         {!byCategory && (
           <div>
-              <div id="postChunk">
+              <div className="postChunk">
               {posts.map((post)=> (
-                <PostList
-                  post = {post}
-                  onClickUp = {onClickUp}
-                  onClickDown = {onClickDown}
-                  onClickEditP = {onClickEditP}
-                  onClickDeleteP = {onClickDeleteP}
-                  comments = {comments}
-                />
+                <div key={post.id}>
+                  <Post
+                    post = {post}
+                    onClickUp = {onClickUp}
+                    onClickDown = {onClickDown}
+                    onClickEditP = {onClickEditP}
+                    onClickDeleteP = {onClickDeleteP}
+                  />
+                  <CommentCount
+                    comments = {comments}
+                    post = {post}
+                  />
+                </div>
                 ))}
               </div>
           </div>

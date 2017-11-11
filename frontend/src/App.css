@@ -1,7 +1,9 @@
 .App {
-  text-align: center;
 }
 
+p {
+  margin-bottom: 0px;
+}
 .selector {
   float: right;
 }
@@ -19,27 +21,26 @@
   list-style-type: none;
 }
 
-.postVoteScore, .voteChunk , .voteChunk i {
-  text-align: right;
+.voteChunk {
   float: right;
+}
+
+.postVoteScore, .post .voteChunk, .post .voteChunk i {
+  text-align: right;
+  display: inline-block;
   color: magenta;
-  font-size: 30px;
-  line-height: 19px;
+  font-size: 20px;
   margin-left: 5px;
-  margin-right: 5px;
 }
 
 .postTitle {
   color: magenta;
+  display: inline;
+  font-size: 20px;
 }
 
 .post {
-  text-align: left;
-  margin-bottom: 10px;
-}
-
-.posts {
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }
 
 .subSection {
@@ -48,11 +49,43 @@
 }
 
 .icon {
-  margin: 0px 4px 0px 11px;
   line-height: normal;
-  font-size: 17px;
 }
 
 .subTitle {
   font-size: 90%;
+}
+
+.postComment .date {
+  float: right;
+}
+
+.postComment .voteChunk i, .postComment .voteChunk div {
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.postComment {
+  border-bottom: 1px grey solid;
+}
+
+.indent {
+  margin-left: 20px;
+}
+
+span {
+  text-decoration: underline;
+}
+
+.post .controls {
+  display: inline-block;
+}
+
+.controls i {
+  padding-right: 10px;
+}
+
+.commentCount {
+  padding-bottom: 10px;
 }

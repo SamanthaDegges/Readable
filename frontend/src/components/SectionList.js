@@ -9,22 +9,15 @@ export default function SectionList ({ categories }) {
   if (!categories){return <div><h2>No Categories</h2></div>} else {    //returning soemthing triggers re render? And if state changes, rerender.
     return (
       <div>
-        <h5 className=''>
-        What Everyone Is Talking About
-        </h5>
+        <h5 className=''>What Everyone Is Talking About</h5>
         <div className="list-group">
           {categories.map((each) => ( //onclick, each category can then call a function to populate posts(of that cateogry and then display them)
-
-            <Link
-            className = "list-group-item"
-            key={each.name}
-            to="/react"
-            >{each.name}</Link>
-              // <a key={each.name} className = "list-group-item"> {/*onClick={show listed posts for that categry)} */}
-              // {each.name}
-              // </a>
+            <Link className="list-group-item" key={each.name} to={`/${each.name}`}>
+              {each.name}
+            </Link>
             ))}
         </div>
+
       </div>
 
     )
